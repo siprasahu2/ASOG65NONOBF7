@@ -1,0 +1,45 @@
+package com.TP.ASOG65NONOBF7.ASOG_NON_OBF_Generic.ASOG_NON_OBF_Generic;
+import java.util.*;
+import com.synchronoss.ruleserver.core.xpath.XOMContainerBean;
+import com.synchronoss.ruleserver.core.xpath.XOMAccessBean;
+import com.wisor.brms.asog.xpath.XPathProcessor;
+import com.wisor.brms.asog.xpath.Occurence;
+import com.wisor.brms.asog.Populated;
+import com.wisor.brms.asog.Equals;
+import com.wisor.brms.asog.Contains;
+import com.wisor.brms.asog.LengthCheck;
+import com.wisor.brms.asog.Position;
+import com.wisor.brms.asog.DatatypeCheck;
+import com.wisor.brms.asog.SpaceCheck;
+import com.wisor.brms.asog.TNFormat;
+import com.wisor.brms.asog.RangeOfValues;
+import com.wisor.brms.asog.DateCheck;
+import com.wisor.brms.asog.Prohibited;
+import com.wisor.brms.asog.DateFormatCheck;
+import com.wisor.brms.asog.Required;
+import com.wisor.brms.asog.CapitalLetterCheck;
+import com.wisor.brms.asog.TimeFormatCheck;
+import com.wisor.brms.asog.SpecialFormat;
+import com.wisor.brms.asog.dao.SuplementOrderCheck;
+import com.wisor.brms.asog.dao.HOLIDAY;
+import com.wisor.brms.ErrorCodeMsg;
+import com.wisor.brms.ErrorResponse;
+rule "138" dialect "mvel" ruleflow-group "ASOG_NON_OBF_Generic"
+enabled true
+
+when
+xcb object
+Evaluate 
+Start Brace
+the "//ICSC" is_equal_to_values "VN00VN05NY01NE01PA65CP10NJ90CP01PA70PA01CP88NJ01GT10VW01GT11CT07CT30CT05" 
+AND
+ the "//UOM_HDR/CCNA" is_equal_to_values "AKZALYATXAWLBFLCEODNCETXGEEIUWMWBPCKSBMSUFSYCCSOCSXETPFSCIFPLBHSLLTZVWBTSBNMOENBCADMAHDAHMBAKBAOBPNBSMCDACIVCTJCUOCZBFLALACMCEMMVMTXFSIHLUHNCMUINWWPFMPIGRMCRMFRRCSMCTGHTQUUMTVGD" 
+AND
+ the 2 position_of "//ASR/ADMIN/REQTYP" field_is_equal_to_values "AFG" 
+AND
+ the "//ASR/ADMIN/WST" is populated 
+End Brace
+
+then
+the error code "138" the error message "THE ASR.WST FIELD IS PROHIBITED FOR SERVICE INQUIRY ASRs" for the field "/ADMIN/WST"
+end

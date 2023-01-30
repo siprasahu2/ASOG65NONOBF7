@@ -1,0 +1,47 @@
+package com.TP.ASOG65NONOBF7.ILEC_Rules.ILEC_Rules;
+import java.util.*;
+import com.synchronoss.ruleserver.core.xpath.XOMContainerBean;
+import com.synchronoss.ruleserver.core.xpath.XOMAccessBean;
+import com.wisor.brms.asog.xpath.XPathProcessor;
+import com.wisor.brms.asog.xpath.Occurence;
+import com.wisor.brms.asog.Populated;
+import com.wisor.brms.asog.Equals;
+import com.wisor.brms.asog.Contains;
+import com.wisor.brms.asog.LengthCheck;
+import com.wisor.brms.asog.Position;
+import com.wisor.brms.asog.DatatypeCheck;
+import com.wisor.brms.asog.SpaceCheck;
+import com.wisor.brms.asog.TNFormat;
+import com.wisor.brms.asog.RangeOfValues;
+import com.wisor.brms.asog.DateCheck;
+import com.wisor.brms.asog.Prohibited;
+import com.wisor.brms.asog.DateFormatCheck;
+import com.wisor.brms.asog.Required;
+import com.wisor.brms.asog.CapitalLetterCheck;
+import com.wisor.brms.asog.TimeFormatCheck;
+import com.wisor.brms.asog.SpecialFormat;
+import com.wisor.brms.asog.dao.SuplementOrderCheck;
+import com.wisor.brms.asog.dao.HOLIDAY;
+import com.wisor.brms.ErrorCodeMsg;
+import com.wisor.brms.ErrorResponse;
+rule "6227" dialect "mvel" ruleflow-group "ILEC_Rules"
+enabled true
+
+when
+xcb object
+Evaluate 
+Start Brace
+the "//ASR/ADMIN/ICSC" is_equal_to_values "NY01NE01CP88NJ90PA70CP01CP10NJ01PA01PA65VW01GT10GT11GT12" 
+AND
+ the 1 position_of "//ASR/ADMIN/REQTYP" field_is_equal_to_values "ML" 
+AND
+ the "//ASR/ADMIN/ACT" is_equal_to_values "NCRD" 
+AND
+ the "//ASR/ADMIN/ECCKT" is populated 
+AND
+ the "//ASR/ADMIN/ECCKT" from 5 to 6 of the segment 2 are not alpha characters to supportvirgule or period as delimiter 
+End Brace
+
+then
+the error code "6227" the error message "POSITIONS 5-6 OF THE SECOND DELIMITED FIELD OF THE ASR:ECCKT SHOULD BE ALPHAS FOR VERIZON ICSCs WHEN THE ASR:RQTYP(1) FIELD IS &apos;M&apos; OR &apos;L&apos; AND THE ASR:ACT FIELD IS &apos;N&apos;, &apos;C&apos;, &apos;R&apos; OR &apos;D&apos;" for the field "/ADMIN/ECCKT"
+end

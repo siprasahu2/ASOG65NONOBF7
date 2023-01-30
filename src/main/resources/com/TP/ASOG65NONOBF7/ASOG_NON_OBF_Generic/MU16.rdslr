@@ -1,0 +1,41 @@
+package com.TP.ASOG65NONOBF7.ASOG_NON_OBF_Generic;
+import java.util.*;
+import com.synchronoss.ruleserver.core.xpath.XOMContainerBean;
+import com.synchronoss.ruleserver.core.xpath.XOMAccessBean;
+import com.wisor.brms.asog.xpath.XPathProcessor;
+import com.wisor.brms.asog.xpath.Occurence;
+import com.wisor.brms.asog.Populated;
+import com.wisor.brms.asog.Equals;
+import com.wisor.brms.asog.Contains;
+import com.wisor.brms.asog.LengthCheck;
+import com.wisor.brms.asog.Position;
+import com.wisor.brms.asog.DatatypeCheck;
+import com.wisor.brms.asog.SpaceCheck;
+import com.wisor.brms.asog.TNFormat;
+import com.wisor.brms.asog.RangeOfValues;
+import com.wisor.brms.asog.DateCheck;
+import com.wisor.brms.asog.Prohibited;
+import com.wisor.brms.asog.DateFormatCheck;
+import com.wisor.brms.asog.Required;
+import com.wisor.brms.asog.CapitalLetterCheck;
+import com.wisor.brms.asog.TimeFormatCheck;
+import com.wisor.brms.asog.SpecialFormat;
+import com.wisor.brms.asog.dao.SuplementOrderCheck;
+import com.wisor.brms.asog.dao.HOLIDAY;
+import com.wisor.brms.ErrorCodeMsg;
+import com.wisor.brms.ErrorResponse;
+rule "MU16" dialect "mvel" ruleflow-group "ASOG_NON_OBF_Generic"
+enabled true
+
+when
+xcb object
+Evaluate 
+Start Brace
+the "//ASR/ADMIN/SUP" is not populated 
+AND
+ the "//OTHER_EC_DETAILS/ICSC" is_equal_to_values "IT58IS70IT59IT60IT61IS77IT57LW01" 
+End Brace
+
+then
+the error code "MU16" the error message "NEW ORDERS FOR GRANDFATHERED OEC ICSCS ARE PROHIBITED.  PLEASE USE ICSC = ET01 INSTEAD" for the field "/OTHER_EC_DETAILS/ICSC"
+end

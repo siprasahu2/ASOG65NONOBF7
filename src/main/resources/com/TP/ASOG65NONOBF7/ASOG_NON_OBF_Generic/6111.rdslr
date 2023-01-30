@@ -1,0 +1,43 @@
+package com.TP.ASOG65NONOBF7.ASOG_NON_OBF_Generic.ASOG_NON_OBF_Generic;
+import java.util.*;
+import com.synchronoss.ruleserver.core.xpath.XOMContainerBean;
+import com.synchronoss.ruleserver.core.xpath.XOMAccessBean;
+import com.wisor.brms.asog.xpath.XPathProcessor;
+import com.wisor.brms.asog.xpath.Occurence;
+import com.wisor.brms.asog.Populated;
+import com.wisor.brms.asog.Equals;
+import com.wisor.brms.asog.Contains;
+import com.wisor.brms.asog.LengthCheck;
+import com.wisor.brms.asog.Position;
+import com.wisor.brms.asog.DatatypeCheck;
+import com.wisor.brms.asog.SpaceCheck;
+import com.wisor.brms.asog.TNFormat;
+import com.wisor.brms.asog.RangeOfValues;
+import com.wisor.brms.asog.DateCheck;
+import com.wisor.brms.asog.Prohibited;
+import com.wisor.brms.asog.DateFormatCheck;
+import com.wisor.brms.asog.Required;
+import com.wisor.brms.asog.CapitalLetterCheck;
+import com.wisor.brms.asog.TimeFormatCheck;
+import com.wisor.brms.asog.SpecialFormat;
+import com.wisor.brms.asog.dao.SuplementOrderCheck;
+import com.wisor.brms.asog.dao.HOLIDAY;
+import com.wisor.brms.ErrorCodeMsg;
+import com.wisor.brms.ErrorResponse;
+rule "6111" dialect "mvel" ruleflow-group "ASOG_NON_OBF_Generic"
+enabled true
+
+when
+xcb object
+Evaluate 
+Start Brace
+the "//ASR/ADMIN/SUP" is not populated 
+AND
+ the "//ASR/ADMIN/ICSC" is_equal_to_values "AL02AL04CA01CA02CO10CT01CT03CT04CT40FL01GE01GN01GN03GS01GS02GT03GT04GT98HI01IN01MT02MT03MT04MT05MT06MT10CT05CT07GN02GN04MT01MT12GS03" 
+AND
+ the "//ASR/ADMIN/ACT" not equals "D" 
+End Brace
+
+then
+the error code "6111" the error message "THE ICSC VALUE IS NOT VALID FOR NEW ORDERS" for the field "/ADMIN/ICSC"
+end

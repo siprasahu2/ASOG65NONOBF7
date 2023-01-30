@@ -1,0 +1,55 @@
+package com.TP.ASOG65NONOBF7.ASOG_NON_OBF_Generic.ASOG_NON_OBF_Generic;
+import java.util.*;
+import com.synchronoss.ruleserver.core.xpath.XOMContainerBean;
+import com.synchronoss.ruleserver.core.xpath.XOMAccessBean;
+import com.wisor.brms.asog.xpath.XPathProcessor;
+import com.wisor.brms.asog.xpath.Occurence;
+import com.wisor.brms.asog.Populated;
+import com.wisor.brms.asog.Equals;
+import com.wisor.brms.asog.Contains;
+import com.wisor.brms.asog.LengthCheck;
+import com.wisor.brms.asog.Position;
+import com.wisor.brms.asog.DatatypeCheck;
+import com.wisor.brms.asog.SpaceCheck;
+import com.wisor.brms.asog.TNFormat;
+import com.wisor.brms.asog.RangeOfValues;
+import com.wisor.brms.asog.DateCheck;
+import com.wisor.brms.asog.Prohibited;
+import com.wisor.brms.asog.DateFormatCheck;
+import com.wisor.brms.asog.Required;
+import com.wisor.brms.asog.CapitalLetterCheck;
+import com.wisor.brms.asog.TimeFormatCheck;
+import com.wisor.brms.asog.SpecialFormat;
+import com.wisor.brms.asog.dao.SuplementOrderCheck;
+import com.wisor.brms.asog.dao.HOLIDAY;
+import com.wisor.brms.ErrorCodeMsg;
+import com.wisor.brms.ErrorResponse;
+rule "6249" dialect "mvel" ruleflow-group "ASOG_NON_OBF_Generic"
+enabled true
+
+when
+xcb object
+Evaluate 
+Start Brace
+the "//ICSC" is not_equal_to_values "AL42AL47AL41AL44AL45AL46AL43TW01NL01MF02MF03EV28RT01CT99CZ02CU03CI12LR01IA04OR03IA16IZ43CI42MR01AU01BT02CA03IB79IS36ST03IB94ID35VI20IB97IS14CI75IB37VI10IS88CI24IA07HT05IA13EN01IA14SG01SL02SL01ID60CI63CI60FT20FT21LN01SB01SB02SB03SB04SC01SC02SC03SC04SC051WTG2WTG1SPRFC10HP01KS01LC20LG01PT40TD02TD03TD04TD05TD06TD08TD09VE15" 
+AND
+ the "//ASR/ADMIN/ICSC" is_equal_to_values "NY01NE01CP88NJ90PA70CP01CP10NJ01PA01PA65VW01GT10GT11GT12" 
+AND
+ the 1 position_of "//ASR/ADMIN/REQTYP" field_is_equal_to_values "SV" 
+AND
+ the "//ASR/ADMIN/ACT" is_equal_to_values "NMTC" 
+AND
+ it is not true that_the "//ASR/ADMIN/PROJECT" is compared with its position 1 to 6 with values "SPUNE1" 
+AND
+ the "//ASR/ADMIN/ACTL" is populated 
+AND
+ the "//TRANSPORT/CFA" is populated 
+AND
+ it is not true that_the pos 1 to 8 of the field "//TRANSPORT/CFA" with specified segment 4 is equal to the pos 1 to 8 of another field "//ASR/ADMIN/ACTL" 
+AND
+ it is not true that_the pos 1 to 8 of the field "//TRANSPORT/CFA" with specified segment 5 is equal to the pos 1 to 8 of another field "//ASR/ADMIN/ACTL" 
+End Brace
+
+then
+the error code "6249" the error message "THE FIRST 8 POSITIONS OF THE &apos;A&apos; LOCATION OR THE &apos;Z&apos; LOCATION OF THE TRANS:CFA FIELD MUST MATCH THE FIRST 8 POSITIONS OF THE ASR:ACTL FIELD FOR VERIZON ICSCs WHEN THE ASR:RQTYP(1) FIELD IS &apos;S&apos; OR &apos;V&apos;, THE ASR:ACT FIELD IS &apos;N&apos;, &apos;M&apos;, &apos;T&apos; OR &apos;C&apos; AND THE FIRST 6 POSITIONS OF THE ASR:PROJECT FIELD ARE NOT &apos;SPUNE1&apos;" for the field "/TRANSPORT/CFA"
+end

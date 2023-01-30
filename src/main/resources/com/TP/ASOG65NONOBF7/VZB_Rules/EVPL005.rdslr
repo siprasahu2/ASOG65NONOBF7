@@ -1,0 +1,50 @@
+package com.TP.ASOG65NONOBF7.VZB_Rules;
+import java.util.*;
+import com.synchronoss.ruleserver.core.xpath.XOMContainerBean;
+import com.synchronoss.ruleserver.core.xpath.XOMAccessBean;
+import com.wisor.brms.asog.xpath.XPathProcessor;
+import com.wisor.brms.asog.xpath.Occurence;
+import com.wisor.brms.asog.Populated;
+import com.wisor.brms.asog.Equals;
+import com.wisor.brms.asog.Contains;
+import com.wisor.brms.asog.LengthCheck;
+import com.wisor.brms.asog.Position;
+import com.wisor.brms.asog.DatatypeCheck;
+import com.wisor.brms.asog.SpaceCheck;
+import com.wisor.brms.asog.TNFormat;
+import com.wisor.brms.asog.RangeOfValues;
+import com.wisor.brms.asog.DateCheck;
+import com.wisor.brms.asog.Prohibited;
+import com.wisor.brms.asog.DateFormatCheck;
+import com.wisor.brms.asog.Required;
+import com.wisor.brms.asog.CapitalLetterCheck;
+import com.wisor.brms.asog.TimeFormatCheck;
+import com.wisor.brms.asog.SpecialFormat;
+import com.wisor.brms.asog.dao.SuplementOrderCheck;
+import com.wisor.brms.asog.dao.HOLIDAY;
+import com.wisor.brms.ErrorCodeMsg;
+import com.wisor.brms.ErrorResponse;
+rule "EVPL005" dialect "mvel" ruleflow-group "VZB_Rules"
+enabled true
+
+when
+xcb object
+Evaluate 
+Start Brace
+the "//ASR/ADMIN/SPEC" is_equal_to_values "PPETBGPPPETBVPPPETRP2PPETSTAPPFRBGPPPFRBVRPPFRRP2PPFRSTAPPHDBGPPPHDRP2PPHD" 
+AND
+ 
+Start Brace
+ 
+Start Brace
+ the "//ASR/ADMIN/REQTYP" equals "ED" 
+AND
+ the "//ASR/ADMIN/EVCI" equals "B" 
+End Brace
+  
+End Brace
+End Brace
+
+then
+the error code "EVPL005" the error message "THE ECI.SAR FIELD IS REQUIRED FOR ETHERNET VIRTUAL PRIVATE LINE SERVICE" for the field "/EUSA/EUSA_SVC_DETAILS/ECI_ASR_LEVEL/ECI_FIELD/ECI_NAME"
+end

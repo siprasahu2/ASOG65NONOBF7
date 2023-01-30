@@ -1,0 +1,47 @@
+package com.TP.ASOG65NONOBF7.ASOG_NON_OBF_Generic.ASOG_NON_OBF_Generic;
+import java.util.*;
+import com.synchronoss.ruleserver.core.xpath.XOMContainerBean;
+import com.synchronoss.ruleserver.core.xpath.XOMAccessBean;
+import com.wisor.brms.asog.xpath.XPathProcessor;
+import com.wisor.brms.asog.xpath.Occurence;
+import com.wisor.brms.asog.Populated;
+import com.wisor.brms.asog.Equals;
+import com.wisor.brms.asog.Contains;
+import com.wisor.brms.asog.LengthCheck;
+import com.wisor.brms.asog.Position;
+import com.wisor.brms.asog.DatatypeCheck;
+import com.wisor.brms.asog.SpaceCheck;
+import com.wisor.brms.asog.TNFormat;
+import com.wisor.brms.asog.RangeOfValues;
+import com.wisor.brms.asog.DateCheck;
+import com.wisor.brms.asog.Prohibited;
+import com.wisor.brms.asog.DateFormatCheck;
+import com.wisor.brms.asog.Required;
+import com.wisor.brms.asog.CapitalLetterCheck;
+import com.wisor.brms.asog.TimeFormatCheck;
+import com.wisor.brms.asog.SpecialFormat;
+import com.wisor.brms.asog.dao.SuplementOrderCheck;
+import com.wisor.brms.asog.dao.HOLIDAY;
+import com.wisor.brms.ErrorCodeMsg;
+import com.wisor.brms.ErrorResponse;
+rule "6245" dialect "mvel" ruleflow-group "ASOG_NON_OBF_Generic"
+enabled true
+
+when
+xcb object
+Evaluate 
+Start Brace
+the "//ASR/ADMIN/ICSC" is_equal_to_values "NY01NE01CP88NJ90PA70CP01CP10NJ01PA01PA65VW01GT10GT11GT12" 
+AND
+ the 1 position_of "//ASR/ADMIN/REQTYP" is equal to "M" 
+AND
+ the "//ASR/ADMIN/ACT" is_equal_to_values "NCR" 
+AND
+ the "//COMMON_MATRIX_ROW/TSC" is populated 
+AND
+ the "//COMMON_MATRIX_ROW/TSC" not equals "//ASR/ADMIN/TSC" 
+End Brace
+
+then
+the error code "6245" the error message "WHEN THE ASR:RQTYP(1) FIELD IS &apos;M&apos;, AND THE ASR:ACT FIELD IS &apos;N&apos;, &apos;C&apos; OR &apos;R&apos;, THEN THE TQ:TGTSC FIELD MUST MATCH THE ASR:TSC FIELD FOR VERIZON ICSCs" for the field "/COMMON_MATRIX_ROW/TSC"
+end

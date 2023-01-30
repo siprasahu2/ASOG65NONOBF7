@@ -1,0 +1,65 @@
+package com.TP.ASOG65NONOBF7.ILEC_Rules.ILEC_Rules;
+import java.util.*;
+import com.synchronoss.ruleserver.core.xpath.XOMContainerBean;
+import com.synchronoss.ruleserver.core.xpath.XOMAccessBean;
+import com.wisor.brms.asog.xpath.XPathProcessor;
+import com.wisor.brms.asog.xpath.Occurence;
+import com.wisor.brms.asog.Populated;
+import com.wisor.brms.asog.Equals;
+import com.wisor.brms.asog.Contains;
+import com.wisor.brms.asog.LengthCheck;
+import com.wisor.brms.asog.Position;
+import com.wisor.brms.asog.DatatypeCheck;
+import com.wisor.brms.asog.SpaceCheck;
+import com.wisor.brms.asog.TNFormat;
+import com.wisor.brms.asog.RangeOfValues;
+import com.wisor.brms.asog.DateCheck;
+import com.wisor.brms.asog.Prohibited;
+import com.wisor.brms.asog.DateFormatCheck;
+import com.wisor.brms.asog.Required;
+import com.wisor.brms.asog.CapitalLetterCheck;
+import com.wisor.brms.asog.TimeFormatCheck;
+import com.wisor.brms.asog.SpecialFormat;
+import com.wisor.brms.asog.dao.SuplementOrderCheck;
+import com.wisor.brms.asog.dao.HOLIDAY;
+import com.wisor.brms.ErrorCodeMsg;
+import com.wisor.brms.ErrorResponse;
+rule "6298" dialect "mvel" ruleflow-group "ILEC_Rules"
+enabled true
+
+when
+xcb object
+Evaluate 
+Start Brace
+the "//ASR/CONTACT/DRC" not equals "TEL" 
+AND
+ the "//ASR/ADMIN/ICSC" is_equal_to_values "SC01SC02SC03SC04SC05SB01SB02SB03SB04" 
+AND
+ the "//ASR/ADMIN/CCNA" is not_equal_to_values "AVSLUWTIMXMCXPCAAXADMAHDAHMAKZALYAWLBAKBAOBCUBFLBMIBPNBSMCBLCDACEOCGLCIVCPFCSOCSUCSXCTJCUOCUYCZBDNCETPETXFLAFSCFSIGEEGLVGMBHLUHNCIASIFPINDIUWJCRLACLBHMCEMCZMMVMOEMTXMUIMWBMWZNBCNSINWWOCLPCKPFMPIGRMCRMFRRCSBMSBNSBTSLLSMCSUFSWVSYCSZMTGHTQUTZVUMTVGDZAQ" 
+AND
+ the "//ASR/ADMIN/ACT" is_equal_to_values "NCT" 
+AND
+ 
+Start Brace
+ 
+Start Brace
+ the "//ASR/ADMIN/RTR" equals "S" 
+OR
+ the "//ASR/ADMIN/RTR" has_specified range 1 to 10 
+End Brace
+ 
+AND
+ 
+Start Brace
+ the "//ASR/CONTACT/DSGCON_STR" is not populated 
+AND
+ the "//ASR/CONTACT/DSG_FAX_NO" is not populated 
+End Brace
+ 
+End Brace
+ 
+End Brace
+
+then
+the error code "6298" the error message "THE ASR:DRC FIELD MUST BE POPULATED WITH 'TEL' FOR BELL SOUTH ICSCS" for the field "/CONTACT/DRC"
+end

@@ -1,0 +1,51 @@
+package com.TP.ASOG65NONOBF7.ASOG_NON_OBF_Generic.ASOG_NON_OBF_Generic;
+import java.util.*;
+import com.synchronoss.ruleserver.core.xpath.XOMContainerBean;
+import com.synchronoss.ruleserver.core.xpath.XOMAccessBean;
+import com.wisor.brms.asog.xpath.XPathProcessor;
+import com.wisor.brms.asog.xpath.Occurence;
+import com.wisor.brms.asog.Populated;
+import com.wisor.brms.asog.Equals;
+import com.wisor.brms.asog.Contains;
+import com.wisor.brms.asog.LengthCheck;
+import com.wisor.brms.asog.Position;
+import com.wisor.brms.asog.DatatypeCheck;
+import com.wisor.brms.asog.SpaceCheck;
+import com.wisor.brms.asog.TNFormat;
+import com.wisor.brms.asog.RangeOfValues;
+import com.wisor.brms.asog.DateCheck;
+import com.wisor.brms.asog.Prohibited;
+import com.wisor.brms.asog.DateFormatCheck;
+import com.wisor.brms.asog.Required;
+import com.wisor.brms.asog.CapitalLetterCheck;
+import com.wisor.brms.asog.TimeFormatCheck;
+import com.wisor.brms.asog.SpecialFormat;
+import com.wisor.brms.asog.dao.SuplementOrderCheck;
+import com.wisor.brms.asog.dao.HOLIDAY;
+import com.wisor.brms.ErrorCodeMsg;
+import com.wisor.brms.ErrorResponse;
+rule "67" dialect "mvel" ruleflow-group "ASOG_NON_OBF_Generic"
+enabled true
+
+when
+xcb object
+Evaluate 
+Start Brace
+the "//ASR/ADMIN/ICSC" is_equal_to_values "AT57EL07EV28MP05OB01PA70RT01SB02SB03SB04SC02SN01SW10CT99CZ02CU03" 
+AND
+ the "//ASR/ADMIN/ACTL" is populated 
+AND
+ 
+Start Brace
+ it is not true that_the_length_of "//ASR/ADMIN/ACTL" is equal to 8 
+AND
+ it is not true that_the_length_of "//ASR/ADMIN/ACTL" is equal to 11 
+AND
+ the "//ASR/ADMIN/ACTL" is not_equal_to_values "NNEW" 
+End Brace
+ 
+End Brace
+
+then
+the error code "67" the error message "THE ASR:ACTL FIELD MUST BE EXACTLY 8 OR 11 CHARACTERS OR &apos;N&apos; OR &apos;NEW&apos; FOR ICSCS &apos;AT57&apos;, &apos;EL07&apos;, &apos;EV28&apos;, &apos;MP05&apos;, &apos;OB01&apos;, &apos;PA70&apos;, &apos;RT01&apos;, &apos;CT99&apos;, &apos;CZ02&apos;, &apos;CU03&apos;,&apos;SB02&apos;, &apos;SB03&apos;, &apos;SB04&apos;, &apos;SC02&apos;, &apos;SN01&apos;, &apos;SW10&apos;" for the field "/ADMIN/ACTL"
+end
